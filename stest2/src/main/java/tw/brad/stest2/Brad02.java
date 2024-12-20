@@ -1,6 +1,7 @@
 package tw.brad.stest2;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,30 @@ public class Brad02 {
 		response.setError(0);
 		response.setMesg("Insert Success");
 		response.setInsertId(isGetId?id:-1);
+		
+		return response;
+	}
+	
+	@PostMapping("/members")
+	public Response insertList(@RequestBody List<Member> members) {
+		String sql = "INSERT INTO member (account,passwd,realname) VALUES (:account, :passwd, :realname)";
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		MapSqlParameterSource[] datas = new MapSqlParameterSource[members.size()];
+		for (int i = 0; i<members.size(); i++) {
+			Member member = members.get(i);
+			datas[i] = new MapSqlParameterSource();
+			datas[i].addValue("account", member.getAccount());
+			datas[i].addValue("passwd", BCrypt.hashpw(member.getPasswd(), BCrypt.gensalt()));
+			datas[i].addValue("realname", member.getRealname());
+		}
+
+		namedParameterJdbcTemplate.batchUpdate(sql, datas, keyHolder);
+		
+		List<Map<String,Object>> ids = keyHolder.getKeyList();
+		for (Map<String,Object> id : ids) {
+			System.out.println(id.get("GENERATED_KEY"));
+		}
 		
 		return response;
 	}
