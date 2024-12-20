@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +26,13 @@ public class Brad01 {
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	@PostMapping("/member")
-	public void insert() {
-		
-		String sql = "INSERT INTO member (account,passwd,realname) VALUES ('aa','bb','cc')";
+	public void insert(@RequestBody Member member) {
+		String sql = "INSERT INTO member (account,passwd,realname) VALUES (:account, :passwd, :realname)";
 		Map<String, String> data = new HashMap<String, String>();
+		data.put("account", member.getAccount());
+		data.put("passwd", member.getPasswd());
+		data.put("realname", member.getRealname());
+		
 		namedParameterJdbcTemplate.update(sql, data);
 		
 		

@@ -1,0 +1,45 @@
+<meta charset="utf-8" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+	let apiUrl = "/brad01/member";
+	function reg(){
+		const postData = {
+				account : $('#account').val(),
+				passwd: $('#passwd').val(),
+				realname: $('#realname').val() 
+		};
+		console.log(postData);
+		
+		// Post Request
+		fetch(apiUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(postData),
+		})
+		.then(response => {
+			if (!response.ok){
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			
+		})
+		.then(data => {
+			console.log('Success');
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+		
+		
+		
+	}
+
+</script>
+
+<h1>Brad01</h1>
+<hr />
+Account: <input id="account" /><br />
+Password: <input id="passwd" /><br />
+Real Name:<input id="realname" /><br />
+<button onclick="reg()">Register</button>
