@@ -1,8 +1,15 @@
 package tw.brad.stest2.model;
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class Member {
 	private Long id;
+	
+	@Size(min=6, max=20)
 	private String account;
+	
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,}$")
 	private String passwd;
 	private String realname;
 	public Long getId() {
