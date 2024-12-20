@@ -6,6 +6,11 @@ public class Hotel {
 	private String addr;
 	private String tel;
 	
+	public Hotel() {}
+	public Hotel(String name, String addr, String tel) {
+		this.name = name; this.addr = addr; this.tel = tel;
+	}
+	
 	public Long getId() {
 		return id;
 	}
