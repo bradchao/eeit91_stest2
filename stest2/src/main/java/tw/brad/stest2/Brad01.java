@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +55,28 @@ public class Brad01 {
 		String sql = "DELETE FROM member WHERE id = :id";
 		Map<String, Integer> data = new HashMap<>();
 		data.put("id", id);
+		
+		int n = namedParameterJdbcTemplate.update(sql, data);
+		if (n > 0) {
+			response.setError(0);
+			response.setMesg("Success");
+		}else {
+			response.setError(1);
+			response.setMesg("NO Delete");
+		}
+		
+		return response;
+	}
+	
+	@PutMapping("/member/{id}")
+	public Response update(@PathVariable Integer id, @RequestBody @Valid Member member) {
+		String sql = "UPDATE member SET account = :account, passwd = :passwd, realname = :realname" + 
+					" WHERE id = :id";
+		Map<String, Object> data = new HashMap<>();
+		data.put("id", id);
+		data.put("account", member.getAccount());
+		data.put("passwd", BCrypt.hashpw(member.getPasswd(), BCrypt.gensalt()));
+		data.put("realname", member.getRealname());
 		
 		int n = namedParameterJdbcTemplate.update(sql, data);
 		if (n > 0) {
