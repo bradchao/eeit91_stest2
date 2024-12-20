@@ -1,40 +1,42 @@
 <meta charset="utf-8" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-	let apiUrl = "/brad01/member";
-	function reg(){
-		const postData = {
-				account : $('#account').val(),
-				passwd: $('#passwd').val(),
-				realname: $('#realname').val() 
-		};
-		console.log(postData);
-		
-		// Post Request
-		fetch(apiUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(postData),
-		})
-		.then(response => {
-			if (!response.ok){
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
+		let apiUrl = "/brad01/member";
+		function reg(){
+			const postData = {
+					account : $('#account').val(),
+					passwd: $('#passwd').val(),
+					realname: $('#realname').val() 
+			};
+			console.log(postData);
 			
-		})
-		.then(data => {
-			console.log('Success');
-		})
-		.catch(error => {
-			console.error('Error:', error);
-		});
-		
-		
-		
-	}
-
+			// Post Request
+			fetch(apiUrl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(postData),
+			})
+			.then(response => {
+					if (!response.ok){
+						throw new Error(`HTTP error! status: ${response.status}`);
+					}
+					return response.json();
+				}
+			)
+			.then(data => {
+					console.log('Success: ', data);
+				}
+			)
+			.catch(error => {
+					console.error('Error:', error);
+				}
+			);
+			
+			
+			
+		}
 </script>
 
 <h1>Brad01</h1>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.brad.stest2.model.Member;
+import tw.brad.stest2.model.Response;
 
 /*
  * NamedParameterJdbcTemplate
@@ -25,8 +26,11 @@ public class Brad01 {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
+	@Autowired
+	private Response response;
+	
 	@PostMapping("/member")
-	public void insert(@RequestBody Member member) {
+	public Response insert(@RequestBody Member member) {
 		String sql = "INSERT INTO member (account,passwd,realname) VALUES (:account, :passwd, :realname)";
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("account", member.getAccount());
@@ -35,7 +39,10 @@ public class Brad01 {
 		
 		namedParameterJdbcTemplate.update(sql, data);
 		
+		response.setError(0);
+		response.setMesg("Success");
 		
+		return response;
 	}
 	
 	
