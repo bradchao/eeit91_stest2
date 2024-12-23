@@ -66,6 +66,30 @@ public class Brad04 {
 		return list;
 	}
 	
-	
+	/*
+	 * query => SELECT => List
+	 * queryObject => 一個 Object
+	 * SELECT count(*) count FROM hotel => ResultSet
+	 * count
+	 * 84 
+	 */
+	@GetMapping("/hotelv2/{id}")
+	public Hotel test4(@PathVariable int id) {
+		String sql = "SELECT id, name, addr, tel FROM hotel WHERE id = :id";
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", id);
+		
+		Hotel hotel ;
+		
+		try {
+			hotel = namedParameterJdbcTemplate.queryForObject(sql, params, hotelRowMapper);
+		}catch(Exception e) {
+			hotel = new Hotel();
+			hotel.setErrorCode(1);
+		}
+		
+		return hotel;
+	}
 
 }
