@@ -86,6 +86,10 @@ public class Brad03 {
 	
 	@RequestMapping("/test4")
 	public void test4() {
+		MapSqlParameterSource source = new MapSqlParameterSource();
+		namedParameterJdbcTemplate.update("DELETE FROM hotel", source);
+		namedParameterJdbcTemplate.update("ALTER TABLE hotel auto_increment = 1", source);
+		
 		String url = "https://data.moa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelStay.aspx";
 		RestTemplate template = new RestTemplate();
 		String content = template.getForObject(url, String.class);
