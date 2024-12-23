@@ -119,5 +119,10 @@ public class Brad03 {
 		
 	}
 	
+	@RequestMapping("/test5")
+	public void test5() {
+		
+	}
+	
 	
 }

@@ -53,6 +53,19 @@ public class Brad04 {
 		}
 	}
 	
+	@GetMapping("/hotels/search/{key}")
+	public List<Hotel> test3(@PathVariable String key){
+		String sql = "SELECT id,name,addr,tel FROM hotel WHERE name LIKE :skey OR addr LIKE :skey OR tel LIKE :skey";
+		
+		String skey = "%" + key + "%";
+		Map<String, Object> params = new HashMap<>();
+		params.put("skey", skey);
+		
+		List<Hotel> list = namedParameterJdbcTemplate.query(sql, params, hotelRowMapper);
+		
+		return list;
+	}
+	
 	
 
 }
