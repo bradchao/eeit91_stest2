@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Hotel {
 	private Long id;
 	
+	private int errorCode;
+	
 	@JsonProperty("Name")
 	private String name;
 	
@@ -21,6 +23,14 @@ public class Hotel {
 		this.name = name; this.addr = addr; this.tel = tel;
 	}
 	
+	
+	
+	public int getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
 	public Long getId() {
 		return id;
 	}
