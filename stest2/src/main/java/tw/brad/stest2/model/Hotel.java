@@ -1,9 +1,19 @@
 package tw.brad.stest2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Hotel {
 	private Long id;
+	
+	@JsonProperty("Name")
 	private String name;
+	
+	@JsonProperty("Address")
 	private String addr;
+	
+	@JsonProperty("Tel")
 	private String tel;
 	
 	public Hotel() {}

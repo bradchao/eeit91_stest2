@@ -47,7 +47,6 @@ public class Brad03 {
 			for (Hotel hh: list) {
 				System.out.printf("%s:%s:%s\n", hh.getName(), hh.getAddr(), hh.getTel());
 			}
-
 			
 		} catch (Exception e) {
 			System.out.println(e);
@@ -85,6 +84,36 @@ public class Brad03 {
 		
 	}
 	
+	@RequestMapping("/test4")
+	public void test4() {
+		String url = "https://data.moa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelStay.aspx";
+		RestTemplate template = new RestTemplate();
+		String content = template.getForObject(url, String.class);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			List<Hotel> list = mapper.readValue(content, new TypeReference<List<Hotel>>() {});
+
+			String sql = "INSERT INTO hotel (name,addr,tel) VALUES (:name, :addr, :tel)";
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			MapSqlParameterSource[] datas = new MapSqlParameterSource[list.size()];
+			for (int i = 0; i<list.size(); i++) {
+				Hotel hotel = list.get(i);
+				datas[i] = new MapSqlParameterSource();
+				datas[i].addValue("name", hotel.getName());
+				datas[i].addValue("addr", hotel.getAddr());
+				datas[i].addValue("tel", hotel.getTel());
+			}
+			namedParameterJdbcTemplate.batchUpdate(sql, datas, keyHolder);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		
+		
+		
+	}
 	
 	
 }
