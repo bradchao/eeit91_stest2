@@ -47,9 +47,15 @@ public class Brad05 {
 	public List<Order> test2(@PathVariable(required = false) Integer orderId ) {
 		String sql = "SELECT o.OrderID, o.OrderDate, od.UnitPrice, od.Quantity, p.ProductName FROM orders o " + 
 				"JOIN orderdetails od ON o.OrderID = od.OrderID " + 
-				"JOIN products p ON p.ProductID = od.ProductID WHERE o.OrderID < 10250"; 
+				"JOIN products p ON p.ProductID = od.ProductID"; 
 	
 		Map<String, Object> params = new HashMap<>();
+		
+		if (orderId != null) {
+			sql += " WHERE o.OrderID = :orderId";
+			params.put("orderId", orderId);
+		}
+		
 		List<Map<String,Object>> rows = namedParameterJdbcTemplate.queryForList(sql, params);
 		
 		
@@ -58,13 +64,11 @@ public class Brad05 {
 		for (Map<String,Object> row : rows) {
 			int oid = (Integer)row.get("OrderID");
 			
-			System.out.println(row);
-			
 			Order order = orderMap.get(oid);
 			if (order == null) {
 				order = new Order();
 				order.setOrderId(oid);
-				order.setOrderDate((String)row.get("OrderDate").toString());
+				order.setOrderDate(row.get("OrderDate").toString());
 				orderMap.put(oid, order);
 			}
 			
